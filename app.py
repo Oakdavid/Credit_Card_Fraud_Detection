@@ -1,12 +1,13 @@
 from repositories.data_loader import FraudRepository
-from services.prediction_service import prediction_service
-from services.training_service import TrainingService
 from services.prediction_service import PredictionService
+from services.training_service import TrainingService
 from services.data_service import DataService
 
 repo = FraudRepository()
 
 service = TrainingService(repo)
+data_service = DataService(repo)
+prediction_service = PredictionService(repo)
 
 sample_transaction = {
     "Time": 0.1,
