@@ -24,6 +24,11 @@ def predict():
 
         transaction_data = request.get_json()
 
+        if transaction_data is None:
+            return jsonify({
+                "error": "Invalid input: Please input a data"
+            }), 400
+
         result = prediction_service.predict_transaction(
             transaction_data
         )
