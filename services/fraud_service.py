@@ -24,21 +24,15 @@ class FraudService:
 
         return data
     
-    #flask api call#
-    # def inspect_data(self):
-    #     data = self.repository.load_data()
-    #     summary = {
-    #         "shape": data.shape,
-    #         "columns": data.columns.tolist(),
-    #         "missing_values": data.isnull().sum().to_dict(),
-    #         "duplicates": int(data.duplicated().sum()),
-    #     "target_distribution": data["Class"].value_counts().to_dict()
-    # }
-    #     return summary, data
-    
     
     def prepare_data(self):
         data = self.repository.load_data()
+
+        print('Missing values in dataset:\n', data.isnull().sum())
+        print('duplicate rows in dataset:', data.duplicated().sum())
+
+        data = data.drop_duplicates()
+        data = data.fillna(0)
 
         features = data.drop('Class', axis=1)
         target = data['Class']
@@ -66,11 +60,6 @@ class FraudService:
 
         return x_train, x_test, y_train, y_test
         
-        #     "x_train_shape": x_train.shape,
-        #     "x_test_shape": x_test.shape,
-        #     "y_train_shape": y_train.shape,
-        #     "y_test_shape": y_test.shape
-        # }
 
     def train_model(self, x_train, y_train, x_test=None, y_test=None):
         # Train a Random Forest classifier and save the trained model
