@@ -7,6 +7,7 @@ from services.training_service import TrainingService
 from services.data_service import DataService
 
 app = Flask(__name__)
+CORS(app)
 
 repo = FraudRepository()
 
