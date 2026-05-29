@@ -46,3 +46,15 @@ class DataService:
         print(f"Testing set shape: {x_test.shape}")
 
         return x_train, x_test, y_train, y_test
+    
+    def get_sample_transaction(self):
+        data = self.repository.load_data()
+
+        sample = (
+            data
+            .drop(columns=['Class'])
+            .sample(1)
+            .to_dict(orient='records')[0]
+        )
+
+        return sample

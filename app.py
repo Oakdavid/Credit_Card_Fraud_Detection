@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from repositories.data_loader import FraudRepository
 from services.prediction_service import PredictionService
@@ -41,6 +42,27 @@ def predict():
             "error": str(e)
         }), 400
 
+@app.route('/health')
+def health():
+    return jsonify({
+        "status": "online",
+        "model": "RandomForest",
+        "roc_auc": 0.9246
+    })
+
+@app.route('/sample-transaction', methods=['GET'])
+def get_sample_transaction():
+
+    try:
+        data_service = DataService(repo)
+        sample_transaction = data_service.get_sample_transaction()
+
+        return jsonify(sample_transaction)
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
