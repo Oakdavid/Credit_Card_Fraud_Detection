@@ -19,29 +19,29 @@ def home():
     return "Fraud Detection API Running"
 
 
-@app.route('/predict', methods=['POST'])
-def predict():
+# @app.route('/predict', methods=['POST'])
+# def predict():
 
-    try:
+#     try:
 
-        transaction_data = request.get_json()
+#         transaction_data = request.get_json()
 
-        if transaction_data is None:
-            return jsonify({
-                "error": "Invalid input: Please input a data"
-            }), 400
+#         if transaction_data is None:
+#             return jsonify({
+#                 "error": "Invalid input: Please input a data"
+#             }), 400
 
-        result = prediction_service.predict_transaction(
-            transaction_data
-        )
+#         result = prediction_service.predict_transaction(
+#             transaction_data
+#         )
 
-        return jsonify(result)
+#         return jsonify(result)
 
-    except Exception as e:
+#     except Exception as e:
 
-        return jsonify({
-            "error": str(e)
-        }), 400
+#         return jsonify({
+#             "error": str(e)
+#         }), 400
 
 @app.route('/health')
 def health():
@@ -61,6 +61,31 @@ def get_sample_transaction():
         return jsonify(sample_transaction)
 
     except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 400
+
+@app.route('/predict', methods=['POST'])
+def predict():
+
+    try:
+
+        transaction_data = request.get_json()
+
+        print("Incoming Data:")
+        print(transaction_data)
+
+        result = prediction_service.predict_transaction(
+            transaction_data
+        )
+
+        return jsonify(result)
+
+    except Exception as e:
+
+        print("Prediction Error:")
+        print(str(e))
+
         return jsonify({
             "error": str(e)
         }), 400
